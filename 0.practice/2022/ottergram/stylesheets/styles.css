@@ -108,3 +108,24 @@ a {
     font-family: 'airstream';
     font-size: 40px;
 }
+
+/* orientation 보기 방향에 따라 변경 */
+/* @media screen and (min-width: 768px) { */
+@media (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+        overflow: hidden;
+    }
+    .thumbnail-list {
+        flex-direction: column;
+        order: 0;
+        margin-left: 20px;
+    
+    }
+    .thumbnail-item {
+        max-width: 260px;
+    }
+    .thumbnail-item + .thumbnail-item {
+        margin-top: 20px;
+    }
+}
