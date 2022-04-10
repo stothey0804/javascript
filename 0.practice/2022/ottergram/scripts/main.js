@@ -1,6 +1,4 @@
-// 스크립트 동작 설계
-// 1. 클릭이벤트 발생
-// 2. data attr 조회 후 url 및 텍스트 얻기, 제목을 상세 이미지에 설정.
+// use strict - 엄격모드 사용. 
 
 const DETAIL_IMAGE_SELECTOR = '[data-image-role="target"]';
 const DETAIL_TITLE_SELECTOR = '[data-image-role="title"]';
