@@ -6,22 +6,20 @@ const DETAIL_IMAGE_SELECTOR = '[data-image-role="target"]';
 const DETAIL_TITLE_SELECTOR = '[data-image-role="title"]';
 const THUMBNAIL_LINK_SELECTOR = '[data-image-role="trigger"]';
 
-const thumnail_link = document.querySelectorAll(THUMBNAIL_LINK_SELECTOR);
-
 // event function
-document.querySelector('.thumbnail-list').addEventListener('click', (e) => {
-    e.preventDefault();
-    if(e.target.tagName === "A") {
-        const data = e.target.dataset;
+document.querySelectorAll(THUMBNAIL_LINK_SELECTOR).forEach( (element) => {
+    element.addEventListener('click', (e) => {
+        e.preventDefault();
+        const data = e.currentTarget.dataset;
         setDetails(data.imageUrl, data.imageTitle);
-    }
-})
+    });
+});
 
 const setDetails = (imageUrl, imageTitle) => {
     'use strict';
     const detail_image = document.querySelector(DETAIL_IMAGE_SELECTOR);
     const detail_title = document.querySelector(DETAIL_TITLE_SELECTOR);
     detail_image.setAttribute('src', imageUrl);
-    detail_title.innerHTML = imageTitle;
+    detail_title.textContent = imageTitle;
 }
 
