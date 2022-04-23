@@ -1,5 +1,7 @@
 // 그리드 변수
 $grid-colums: 12;
+$grid-gutter-width: 1.5rem;
+
 // break point 
 $grid-breakpoints: (
   mobile: 0,
@@ -35,6 +37,22 @@ body {
 }
 
 .grid-container {
+    display: flex;
+    flex-direction: column;
+    .row {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        .col {
+            display: flex;
+            flex: 1;
+            background: #eee;
+            padding: .5rem;
+        }
+    }
+}
+
+.main-container {
     display: flex;
     flex-direction: column;
     width: 100vw;
