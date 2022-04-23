@@ -1,0 +1,73 @@
+// 그리드 변수
+$grid-colums: 12;
+// break point 
+$grid-breakpoints: (
+  mobile: 0,
+  tablet: 768px,
+  pc: 1200px
+);
+// mixins
+@mixin mobile {
+    @media (min-width: map-get($grid-breakpoints, mobile)) {
+        @content;   
+    }
+}
+@mixin tablet {
+    @media (min-width: map-get($grid-breakpoints, tablet)) {
+        @content;
+    }
+}
+@mixin pc {
+    @media (min-width: map-get($grid-breakpoints, pc)) {
+        @content;
+    }
+}
+
+html, body {
+    margin: 0;
+    font-size: 62.5%; // default: 10px
+    color: #333;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    min-height: 100vh;
+    @include pc {
+        width: 1000px;
+    }
+    .header {
+        flex: 0 0 10rem;
+        background: #f29b97;
+        font-size: 3rem;
+        font-weight: 500;
+        @include pc {
+            flex: 0 0 15rem;
+            font-size: 5rem;
+        }
+    }
+    .main {
+        flex: 1 0 auto;
+        font-size: 1.6rem;
+        background: #f2c997;
+        @include pc {
+            font-size: 1.4rem;
+        }
+    }
+    .footer {
+        flex: 0 0 5rem;
+        background: #f297c1;
+        font-size: 1.2rem;
+        @include pc {
+            flex: 0 0 6rem;
+        }
+    }
+}
+
+
