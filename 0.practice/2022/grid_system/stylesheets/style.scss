@@ -1,6 +1,6 @@
 // 그리드 변수
 $grid-colums: 12;
-$grid-gutter-width: 1.5rem;
+$grid-gutter-width: 1rem;
 
 // break point 
 $grid-breakpoints: (
@@ -25,6 +25,27 @@ $grid-breakpoints: (
     }
 }
 
+@mixin flexbox {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+@mixin col-flex {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+@mixin col-size($size:auto) {
+    -webkit-box-flex: 0 0 $size;
+    -webkit-flex: 0 0 $size;
+    -ms-flex: 0 0 $size;
+    flex: 0 0 $size;
+}
+
 html, body {
     margin: 0;
     font-size: 62.5%; // default: 10px
@@ -36,20 +57,39 @@ body {
     justify-content: center;
 }
 
+// row 에 적용
+.grid-gutters {
+    margin: -1*$grid-gutter-width 0 $grid-gutter-width -1*$grid-gutter-width;
+}
+
 .grid-container {
-    display: flex;
-    flex-direction: column;
     .row {
-        display: flex;
-        flex-direction: row;
-        flex: 1;
+        @include flexbox;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 0;
+        
         .col {
-            display: flex;
-            flex: 1;
-            background: #eee;
-            padding: .5rem;
+            @include flexbox;
+            @include col-flex;
+            // gutter
+            padding: $grid-gutter-width 0 0 $grid-gutter-width;
+            
+        }
+        @for $i from 1 to $grid-colums + 1 {
+            .col-#{$i} {
+                @include flexbox;
+                padding: $grid-gutter-width 0 0 $grid-gutter-width;
+                @include col-size($i * calc(100% / $grid-colums));
+            }
         }
     }
+}
+
+.bg-white {
+    width: 100%;
+    background: #eee;
 }
 
 .main-container {
