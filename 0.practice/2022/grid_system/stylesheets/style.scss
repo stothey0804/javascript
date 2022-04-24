@@ -11,6 +11,7 @@ $grid-breakpoints: (
   tablet: 768px,
   pc: 1200px
 );
+
 // mixins
 @mixin mobile {
     @media (min-width: map-get($grid-breakpoints, mobile)) {
@@ -66,6 +67,7 @@ body {
     justify-content: center;
 }
 
+// ---------------------------------- test 
 // row 에 적용
 .grid-gutters {
     margin: -1*$grid-gutter-width 0 $grid-gutter-width -1*$grid-gutter-width;
@@ -94,6 +96,8 @@ body {
     }
 }
 
+// ----------------------------------
+
 // 개선
 .fix-grid-container {
     position: relative;
@@ -108,9 +112,44 @@ body {
             padding: $grid-gutter-width 0 0 $grid-gutter-width;  
             box-sizing: border-box;
         }
+
+        @include mobile {
+            @for $i from 1 to $mobile-grid-columns + 1 {
+                .col-mobile-#{$i} {
+                    @include flexbox;
+                    padding: $grid-gutter-width 0 0 $grid-gutter-width;
+                    box-sizing: border-box;
+                    @include col-size($i * calc(100% / $mobile-grid-columns));
+                }
+            }
+        }
+        @include tablet {
+            @for $i from 1 to $tablet-grid-columns + 1 {
+                .col-tablet-#{$i} {
+                    @include flexbox;
+                    padding: $grid-gutter-width 0 0 $grid-gutter-width;
+                    box-sizing: border-box;
+                    @include col-size($i * calc(100% / $tablet-grid-columns));
+                }
+            }
+        }
+
+        @include pc {
+            @for $i from 1 to $grid-columns + 1 {
+                .col-#{$i} {
+                    @include flexbox;
+                    padding: $grid-gutter-width 0 0 $grid-gutter-width;
+                    box-sizing: border-box;
+                    @include col-size($i * calc(100% / $grid-columns));
+                }
+            }   
+        }
+
     }
+
+    // 가이드 표시용
     .row {
-        .col {
+        * {
             z-index: 1;
         }
     }
@@ -123,7 +162,7 @@ body {
             > div { 
                 border: 1px solid red; 
                 width: 100%;
-                height: 30rem; 
+                height: 15rem; 
             }
         }
 
@@ -153,6 +192,11 @@ body {
     background: #eee;
 }
 
+.text-center {
+    text-align: center;
+}
+
+// layouts
 .main-container {
     display: flex;
     flex-direction: column;
