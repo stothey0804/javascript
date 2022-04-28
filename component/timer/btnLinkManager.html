@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>btnLinkManager</title>
+    <link rel="stylesheet" href="btnLinkManager.css">
+</head>
+</style>
+<body>
+    <section class="landing-btn-linker">
+    <div class="guide">
+        <ul class="now-time">
+            <li>현재 요일: <span id="nowDay"></span></li>
+            <li>현재 시간: <span id="nowTime"></span></li>
+        </ul>
+        <div class="guide-wrap">
+            <div class="addBtn" style="margin: 20px auto;">
+                <a href="#">button element</a>
+            </div>
+        </div>
+    </div>    
+</section>
+</body>
+</html>
+<!-- JS -->
+<script>
+    const WDAY_MAP = { 'sun': 0, 'mon': 1, 'tue':2, 'wed':3, 'thu':4, 'fri':5, 'sat':6 };
+    // 버튼 관리자 컴포넌트
+    class btnLinkManager {
+        constructor(selector) {
+            this.element = document.querySelector(selector);
+            this.now = new Date();
+            this.exception_times = {};
+            this.default_times = { wdays: [], start_hour: 0, end_hour: 24 };
+            this.link = { default: '#', exception: '#'}
+        }
+        set defaultUrl(url) {
+            return this.link.default = url;
+        }
+        set extraUrl(url) {
+            return this.link.exception = url;
+        }
+        set defaultWdays(wdayList) {
+            return this.default_times.wdays = Array.from(wdayList, (wday) => WDAY_MAP[wday])
+                                                .filter((wday) => typeof wday !== 'undefined');
+        }
+        set defaultStartHour(hour) {
+            return this.default_times.start_hour = this.checkHourValidation(hour);
+        }
+        set defaultEndHour(hour) {
+            return this.default_times.end_hour = this.checkHourValidation(hour);
+        }
+        addExtraTime(wday, start_hour, end_hour) {
+            const _wday = WDAY_MAP[wday];
+            if(_wday !== 'undefined') {
+                return this.exception_times[_wday] = { start_hour: this.checkHourValidation(start_hour), end_hour: this.checkHourValidation(end_hour)};
+            } 
+        }
+        getLink() {
+            let result = this.link.default;
+            const _now_wday = this.now.getDay();
+            const is_exception_day = Object.keys(this.exception_times).includes(_now_wday.toString());
+            const is_exception_time = is_exception_day ? this.checkTimeCondition(this.exception_times[_now_wday].start_hour, this.exception_times[_now_wday].end_hour) : false;
+            // exception 여부 체크
+            if (is_exception_time) {
+                result = this.link.exception;
+            } else {
+                // 영업시간 체크
+                const is_default_day = this.default_times.wdays.includes(_now_wday);
+                if (is_default_day) {
+                    const is_default_time = this.checkTimeCondition(this.default_times.start_hour, this.default_times.end_hour);
+                    result = is_default_time ? this.link.default : this.link.exception;
+                } else {
+                    result = this.link.exception;
+                }
+            }
+            return result;
+        }
+        render() {
+            this.element.querySelector('a').setAttribute('href', this.getLink());
+        }
+        checkHourValidation (hour) {
+            const _hour = parseInt(hour);
+            return (_hour >= 0 && _hour <= 24) ? _hour : 0;
+        }
+        checkTimeCondition (start_hour, end_hour) {
+            const _start_hour = (start_hour > 23) ? 0: start_hour;
+            return _start_hour <= this.now.getHours() && this.now.getHours() < end_hour;
+        }
+    }
+
+    // 로딩 후 실행
+    window.onload = () => {
+        const now = new Date();
+        document.getElementById('nowTime').innerText = now.getHours()+'시';
+        document.getElementById('nowDay').innerText = new Intl.DateTimeFormat('ko-KR', { weekday: 'long'}).format(now);
+        
+        // 버튼 링커 설정
+        var btnlinker = new btnLinkManager('.addBtn');
+        // 영업시간, 시간 외 주소 설정
+        btnlinker.defaultUrl = '/default'; // 기본 주소
+        btnlinker.extraUrl = '/extra'; // 시간 외 주소
+        // 기본 영업시간 설정
+        btnlinker.defaultWdays = ['mon','tue','wed','thu','fri'];
+        btnlinker.defaultStartHour = 9;
+        btnlinker.defaultEndHour = 18;
+        // 휴무일 설정
+        btnlinker.addExtraTime('sat', 0, 24); // 토요일 00시 ~ 24시까지
+        btnlinker.addExtraTime('sun', 0, 24); // 일요일 ..
+        btnlinker.addExtraTime('wed', 13, 24); // 수요일 13시 ~ 24시까지
+        // 링크 불러오기 실행
+        btnlinker.render();
+    }
+</script>

@@ -1,0 +1,43 @@
+.landing-btn-linker {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.landing-btn-linker .guide .guide-wrap {
+    padding: 10px;
+    background: #eee;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-size: 12px;
+}
+
+.landing-btn-linker .guide .guide-wrap p {
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.landing-btn-linker > div {
+    border: 1px solid #999;
+    margin: 10px auto;
+    padding: 20px;
+    text-align: center;
+}
+.now-time span {
+    font-size: 14px;
+    font-weight: 700;
+}
+.addBtn {
+    margin: 20px auto;
+    width: 200px;
+    background: #fff;
+    border: 1px solid #111;
+    border-radius: 4px;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: 700;
+}
+@media screen and (max-width: 768px) {
+    .landing-btn-linker {
+        width: 90%;
+    }
+}
