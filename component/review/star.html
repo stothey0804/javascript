@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>star test</title>
+    <link rel="stylesheet" href="style/star.css">
+</head>
+<body>
+    <div class="container">
+        <div class="star-wrap"><span class="star-fill" data-rating="1.5"></span></div>
+        <div class="star-wrap"><span class="star-fill" data-rating="4.8"></span></div>
+        <div class="star-wrap"><span class="star-fill" data-rating="4.5"></span></div>
+        <div class="star-wrap"><span class="star-fill" data-rating="4.0"></span></div>
+        <div class="star-wrap"><span class="star-fill" data-rating="3.2"></span></div>
+    </div>
+</body>
+<script>
+    window.onload = () => {
+        const star_list = document.querySelectorAll('.star-fill');
+        star_list.forEach(element => {
+            fillStar(element, element.dataset.rating);
+        });
+    }
+
+    const fillStar = (elem, rating) => {
+        const rating_ratio = (rating / 5.0) * 60;
+        elem.setAttribute('style', `width:${rating_ratio}px`);
+    }
+
+</script>
+</html>

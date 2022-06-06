@@ -1,0 +1,23 @@
+.container {
+    display: block;
+}
+
+.star-wrap, .star-fill {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 60px;
+    height: 12px;
+    background: url("../images/star-icon.svg") no-repeat 0 0 / 60px;
+}
+
+.star-wrap {
+    background-position: 0 0;
+}
+
+.star-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-position: 0 -12px;
+}
