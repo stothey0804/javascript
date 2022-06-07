@@ -1,0 +1,15 @@
+const ds = new App.DataStore();
+ds.add('james@bond.com', 'black coffee');
+ds.add('moneypenny@bond.com', 'chai tea');
+ds.add('jreece@bond.com', 'grayish brown smoothie');
+console.log(ds.getAll);
+
+const myTruck = new App.Truck('007', new App.DataStore());
+myTruck.createOrder({ emailAddress: 'a@aa.com', coffee: 'Americano' });
+myTruck.createOrder({ emailAddress: 'b@bb.com', coffee: 'Chai Tea' });
+myTruck.createOrder({ emailAddress: 'c@cc.com', coffee: 'Latte' });
+myTruck.db;
+myTruck.printOrders();
+myTruck.deliveryOrder('b@bb.com');
+myTruck.deliveryOrder('a@aa.com');
+myTruck.db
