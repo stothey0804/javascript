@@ -9,11 +9,18 @@
 </head>
 <body>
     <div class="container">
-        <div class="star-wrap"><span class="star-fill" data-rating="1.5"></span></div>
-        <div class="star-wrap"><span class="star-fill" data-rating="4.8"></span></div>
-        <div class="star-wrap"><span class="star-fill" data-rating="4.5"></span></div>
-        <div class="star-wrap"><span class="star-fill" data-rating="4.0"></span></div>
-        <div class="star-wrap"><span class="star-fill" data-rating="3.2"></span></div>
+        <div class="review-wrap">
+            <div class="star-wrap"><span class="star-fill" data-rating="1.5"></span></div>
+        </div>
+        <div class="review-wrap">
+            <div class="star-wrap"><span class="star-fill" data-rating="4.5"></span></div>
+        </div>
+        <div class="review-wrap">
+            <div class="star-wrap"><span class="star-fill" data-rating="4.0"></span></div>
+        </div>
+        <div class="review-wrap">
+            <div class="star-wrap"><span class="star-fill" data-rating="3.2"></span></div>
+        </div>
     </div>
 </body>
 <script>
@@ -21,12 +28,18 @@
         const star_list = document.querySelectorAll('.star-fill');
         star_list.forEach(element => {
             fillStar(element, element.dataset.rating);
+            addLabel(element, element.dataset.rating);
         });
     }
 
+    const addLabel = (elem, rating) => {
+        const label = `<div class="star-label">${rating}</div>`;
+        elem.parentNode.parentNode.innerHTML += label;
+    }
+
     const fillStar = (elem, rating) => {
-        const rating_ratio = (rating / 5.0) * 60;
-        elem.setAttribute('style', `width:${rating_ratio}px`);
+        const rating_ratio = (rating / 5.0);
+        elem.setAttribute('style', `width: calc(100% * ${rating_ratio})`);
     }
 
 </script>

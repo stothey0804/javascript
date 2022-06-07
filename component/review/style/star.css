@@ -2,13 +2,20 @@
     display: block;
 }
 
+.review-wrap {
+    display: flex;
+    height: 20px;
+    align-items: center;
+}
+
 .star-wrap, .star-fill {
     margin: 0;
     padding: 0;
     position: relative;
-    width: 60px;
-    height: 12px;
-    background: url("../images/star-icon.svg") no-repeat 0 0 / 60px;
+    display: inline-block;
+    width: 80px;
+    height: 16px;
+    background: url("../images/star-icon.svg") no-repeat 0 0 / 80px;
 }
 
 .star-wrap {
@@ -19,5 +26,13 @@
     position: absolute;
     left: 0;
     top: 0;
-    background-position: 0 -12px;
+    background-position: 0 -16px;
+}
+
+.star-label {
+    margin-left: 4px;
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+    flex: 0 0 20px;
 }
