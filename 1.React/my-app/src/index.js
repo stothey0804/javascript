@@ -33,55 +33,21 @@ import './index.css';
         </button>
     );
   }
-
-
   
   
   class Board extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            squares: Array(9).fill(null),
-            xIsNext: true, 
-        };
-    }
-    // React에서 이벤트를 나타내는 prop에는 on[Event], 이벤트를 처리하는 함수에는 handle[Event]를 사용하는 것이 일반적입니다.
-    handleClick(i) {
-        const squares = this.state.squares.slice();
-
-        // 승자 나온경우, 이미 클릭한 경우 
-        if(calculateWinner(squares) || squares[i]) {
-            return;
-        } 
-
-        squares[i] = this.state.xIsNext ? 'X': 'O';
-        this.setState({
-            squares: squares,
-            xIsNext: !this.state.xIsNext,
-        });
-    }
     renderSquare(i) {
       return (
         <Square 
-            value={this.state.squares[i]} 
-            onClick={() => this.handleClick(i)}
+            value={this.props.squares[i]} 
+            onClick={() => this.props.onClick(i)}
         />
       );
     }
   
     render() {
-        const winner = calculateWinner(this.state.squares);
-        let status = null;
-        
-        if (winner) {
-            status = `Winner: ${winner}`
-        } else {
-            status = `Next player: ${this.state.xIsNext ? 'X': 'O'}`;
-        }
-  
       return (
         <div>
-          <div className="status">{status}</div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -103,19 +69,82 @@ import './index.css';
   }
   
   class Game extends React.Component {
-    render() {
-      return (
-        <div className="game">
-          <div className="game-board">
-            <Board />
-          </div>
-          <div className="game-info">
-            <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
-          </div>
-        </div>
-      );
+    constructor(props) {
+        super(props);
+        this.state = {
+            history: [{
+                squares: Array(9).fill(null),
+            }],
+            stepNumber: 0,
+            xIsNext: true, 
+        };
     }
+
+    // React에서 이벤트를 나타내는 prop에는 on[Event], 이벤트를 처리하는 함수에는 handle[Event]를 사용하는 것이 일반적입니다.
+    handleClick(i) {
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+
+        // 승자 나온경우, 이미 클릭한 경우 
+        if(calculateWinner(squares) || squares[i]) {
+            return;
+        } 
+
+        squares[i] = this.state.xIsNext ? 'X': 'O';
+        this.setState({
+            // push <-> concat (변경하지 않음)
+            // history: history.concat([{
+            //     squares: squares,
+            // }]),
+            history: [...history, { squares: squares }],
+            xIsNext: !this.state.xIsNext,
+            stepNumber: this.state.stepNumber + 1 ,
+        });
+    }
+
+    jumpTo(step) {
+        this.setState({
+            stepNumber: step,
+            xIsNext: (step % 2) === 0,
+        });
+    }
+    
+    render() {
+        // const history = this.state.history;
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[this.state.stepNumber];
+        const winner = calculateWinner(current.squares);
+
+        const moves = history.map ((step, move) => {
+            const desc = move ? `Go to #${move}`: 'Go to game start';
+            return (
+                <li key={move}>
+                   <button onClick={() => this.jumpTo(move)}>{desc}</button> 
+                </li>
+            )
+        });
+
+        let status = null;
+        
+        if (winner) {
+            status = `Winner: ${winner}`
+        } else {
+            status = `Next player: ${this.state.xIsNext ? 'X': 'O'}`;
+        }
+        
+        return (
+            <div className="game">
+            <div className="game-board">
+                <Board onClick={(i) => this.handleClick(i)} squares={current.squares}/>
+            </div>
+            <div className="game-info">
+                <div>{status}</div>
+                <ol>{moves}</ol> 
+            </div>
+            </div>
+        );
+        }
   }
 
   // 승자 확인
