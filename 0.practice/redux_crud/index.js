@@ -1,3 +1,7 @@
+import { reducer } from "./reducer.js";
+
+const store = Redux.createStore(reducer);
+
 const init = () => {
     subject();
     TOC();
