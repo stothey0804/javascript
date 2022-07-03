@@ -80,10 +80,14 @@ import './index.css';
         };
     }
 
+    getHistory() {
+        return this.state.history.slice(0, this.state.stepNumber + 1);
+    }
+
     // React에서 이벤트를 나타내는 prop에는 on[Event], 이벤트를 처리하는 함수에는 handle[Event]를 사용하는 것이 일반적입니다.
     handleClick(i) {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
+        const history = this.getHistory();
+        const current = history[this.state.stepNumber];
         const squares = current.squares.slice();
 
         // 승자 나온경우, 이미 클릭한 경우 
@@ -112,7 +116,7 @@ import './index.css';
     
     render() {
         // const history = this.state.history;
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const history = this.getHistory();
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
 
