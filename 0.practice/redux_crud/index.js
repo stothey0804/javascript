@@ -22,20 +22,26 @@ const subject = () => {
 }
 
 
+document.getElementById('toc').addEventListener('click', function (e) {
+    e.preventDefault;
+    const targetId = e.target.dataset.id;
+    const state = store.getState();
+    if (typeof targetId != 'undefined') {
+        store.dispatch({type:'CHANGE_PAGE', id: state.contents[targetId].id});
+    }
+});
+
+
+
 const TOC = () => {
     const state = store.getState();
     let i = 0;
     let liTags = '';
 
-    const clickHandler = (event, i) => {
-        event.preventDefault;
-        const state = store.getState();
-        store.dispatch({type:'CHANGE_PAGE', id: state.contents[i].id});
-    }
 
     while(i<state.contents.length) {
         liTags += `<li>
-                    <a href="#" onClick="clickHandler(event,${i})">${state.contents[i].title}</a>
+                    <a href="#" data-id="${i}">${state.contents[i].title}</a>
                 </li>`;
         i++;
     }
