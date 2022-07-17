@@ -8,8 +8,8 @@ const init = () => {
     control();
     article();
     //subscribe
-    store.subscribe(article);
     store.subscribe(TOC);
+    store.subscribe(article);
 }
 
 const subject = () => {
@@ -26,19 +26,23 @@ const subject = () => {
 document.getElementById('toc').addEventListener('click', (e) => {
     e.preventDefault;
     const targetId = e.target.dataset.id;
-    const state = store.getState();
+    console.log('target id:', targetId);
     if (typeof targetId != 'undefined') {
-        store.dispatch({type:'SELECT', id: state.contents[targetId].id});
+        store.dispatch({type:'SELECT', id: Number(targetId)});
     }
 });
 
+// create & delete
 document.getElementById('control').addEventListener('click', (event) => {
     event.preventDefault;
     const targetAction = event.target.dataset.action;
-    if(typeof targetAction !== 'undefined') {
+    if(targetAction === 'create') {
         store.dispatch({type:'CHANGE_MODE', mode: targetAction});
+    } else if (targetAction === 'delete') {
+        store.dispatch({type:'DELETE'})
     }
 });
+
 
 // submit
 document.addEventListener('submit', (event) => {
@@ -53,16 +57,14 @@ document.addEventListener('submit', (event) => {
 
 const TOC = () => {
     const state = store.getState();
-    let i = 0;
     let liTags = '';
 
-
-    while(i<state.contents.length) {
+    state.contents.forEach(item => {
         liTags += `<li>
-                    <a onclick="event.preventDefault()" href="#" data-id="${i}">${state.contents[i].title}</a>
+                    <a onclick="event.preventDefault()" href="#" data-id="${item.id}">${item.title}</a>
                 </li>`;
-        i++;
-    }
+    });
+
 
     document.querySelector('#toc').innerHTML = `
     <nav>
@@ -82,7 +84,7 @@ const control = () => {
 }
 const article = () => {
     const state = store.getState();
-    const currId = state.currentPageId-1;
+    const currId = state.currentPageId;
     let content;
 
     if(state.mode === 'create') {
@@ -103,10 +105,12 @@ const article = () => {
         `;
 
     } else if(state.mode === 'read') {
+        console.log('SELECT, now: ', state);
+        const contentData = state.contents.find((item) => item.id === currId);
         content = `
         <article>
-            <h2>${state.contents[currId].title}</h2>
-            ${state.contents[currId].desc}
+            <h2>${contentData.title}</h2>
+            ${contentData.desc}
         </article>
         `
     } else if(state.mode === 'welcome') {
