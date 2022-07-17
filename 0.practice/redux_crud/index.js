@@ -34,18 +34,17 @@ document.getElementById('toc').addEventListener('click', (e) => {
 
 document.getElementById('control').addEventListener('click', (event) => {
     event.preventDefault;
-    const targetAction = e.target.dataset.action;
-    if(typeof targetAction == 'create') {
-        //
-        
+    const targetAction = event.target.dataset.action;
+    if(typeof targetAction !== 'undefined') {
+        store.dispatch({type:'CHANGE_MODE', mode: targetAction});
     }
 });
 
 // submit
 document.addEventListener('submit', (event) => {
     event.preventDefault;
-    const _title = e.target.title.value;
-    const _desc = e.target.desc.value;
+    const _title = event.target.title.value;
+    const _desc = event.target.desc.value;
     console.log(_title, _desc);
     store.dispatch({type:'CREATE', title: _title, desc: _desc});
 });
@@ -60,7 +59,7 @@ const TOC = () => {
 
     while(i<state.contents.length) {
         liTags += `<li>
-                    <a href="#" data-id="${i}">${state.contents[i].title}</a>
+                    <a onclick="event.preventDefault()" href="#" data-id="${i}">${state.contents[i].title}</a>
                 </li>`;
         i++;
     }
@@ -76,8 +75,8 @@ const TOC = () => {
 const control = () => {
     document.querySelector('#control').innerHTML = `
     <ul>
-        <li data-action="create"><a href="/create">create</a></li>
-        <li data-action="delete"><input type="button" value="delete"></li>
+        <li><a onclick="event.preventDefault()" href="/create" data-action="create">create</a></li>
+        <li><input onclick="event.preventDefault()" type="button" value="delete" data-action="delete"></li>
     </ul>
     `;
 }
@@ -89,7 +88,7 @@ const article = () => {
     if(state.mode === 'create') {
         content = `
         <article>
-            <form id="createForm">
+            <form id="createForm" onsubmit="event.preventDefault()">
                 <p>
                     <input type="text" name="title" placeholder="title">
                 </p>
@@ -110,6 +109,13 @@ const article = () => {
             ${state.contents[currId].desc}
         </article>
         `
+    } else if(state.mode === 'welcome') {
+        content = `
+        <article>
+            <h2>Welcome</h2>
+            hello redux~!
+        </article>
+        `;
     }
 
     document.querySelector('#content').innerHTML = content;

@@ -3,7 +3,7 @@ const reducer = (state, action) => {
     if (state === undefined) {
         return {
             currentPageId: 1, // selected id 
-            mode: 'create',
+            mode: 'welcome',
             maxId: 2,
             // 초기 제목
             subject: { title: 'WEB', desc: 'Hello, WEB!' },
@@ -28,6 +28,12 @@ const reducer = (state, action) => {
         }
         newState = { ...state, maxId: newMaxId, mode: 'read' }
         newState.contents.push(newContent);
+    } else if (action.type === 'DELETE') {
+        //
+
+    } else if (action.type === 'CHANGE_MODE') {
+        const _mode = action.mode;
+        newState = { ...state, mode: _mode};
     }
 
     return newState;
