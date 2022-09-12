@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User data</title>
+  <style>
+    .user-container {
+      display: flex;
+      border: 1px solid black;
+      flex-wrap: wrap;
+      width: 300px;
+    }
+
+    .row {
+      display: flex;
+      flex: 0 0 100%;
+      flex-wrap: nowrap;
+    }
+
+    .row>div {
+      line-height: 30px;
+      padding: 0 0 0 10px;
+    }
+
+    .title {
+      display: flex;
+      font-weight: 700;
+      background: antiquewhite;
+      flex: 0 0 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>User Info</h3>
+  <div class="user-container">
+    <div class="row">
+      <div class="title">Name</div>
+      <div class="name"></div>
+    </div>
+    <div class="row">
+      <div class="title">Phone</div>
+      <div class="phone"></div>
+    </div>
+    <div class="row">
+      <div class="title">Email</div>
+      <div class="email"></div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+    integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script>
+    function getUserInfo() {
+      return new Promise(function (resolve, reject) {
+        $.get('https://jsonplaceholder.typicode.com/users/1', function (response) {
+          if (response) {
+            resolve(response)
+          }
+          reject(new Error('failed!'));
+        });
+      })
+    }
+
+    function renderColumn(attr, data) {
+        console.log(`call ${data}`);
+        const columnElem = document.querySelector(attr);
+        columnElem.innerHTML = data;
+    }
+
+    getUserInfo()
+      .then(function (data) {
+        renderColumn('.name', data.name);
+        renderColumn('.phone', data.phone);
+        renderColumn('.email', data.email);
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+- promises.js
+  - 기본 정리
+- promise_test.html
+  - jquery $.get 메서드 이용 기본 테스트 코드
+- promise_test_userInfo.html
+  - 유저 정보 조회 후 출력하는 예제
+- async_test.html
+  - 위 유저 조회 코드를 async await 사용하도록 함 
+- promise_test_multi.js
+  - 실무 참고용 코드, fetch 사용하여 순차적 이행

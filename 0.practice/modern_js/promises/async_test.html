@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Async Await</title>
+  <style>
+    .user-container {
+      display: flex;
+      border: 1px solid black;
+      flex-wrap: wrap;
+      width: 300px;
+    }
+
+    .row {
+      display: flex;
+      flex: 0 0 100%;
+      flex-wrap: nowrap;
+    }
+
+    .row>div {
+      line-height: 30px;
+      padding: 0 0 0 10px;
+    }
+
+    .title {
+      display: flex;
+      font-weight: 700;
+      background: antiquewhite;
+      flex: 0 0 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>User Info</h3>
+  <div class="user-container">
+    <div class="row">
+      <div class="title">Name</div>
+      <div class="name"></div>
+    </div>
+    <div class="row">
+      <div class="title">Phone</div>
+      <div class="phone"></div>
+    </div>
+    <div class="row">
+      <div class="title">Email</div>
+      <div class="email"></div>
+    </div>
+  </div>
+  <script>
+    function fetchUser(id) {
+      const url = `https://jsonplaceholder.typicode.com/users/${id}`
+      return fetch(url).then((response) => response.json());
+    }
+
+    async function renderUser() {
+      const userOne = await fetchUser(1);
+      const userTwo = await fetchUser(2);
+      renderColumn('.name', userOne.name);
+      renderColumn('.phone', userTwo.phone);
+      renderColumn('.email', userOne.email);
+      
+      console.log(userOne);
+      console.log(userTwo);
+    }
+
+    // function renderUser() {
+    //   const userOne = fetchUser(1);
+    //   renderColumn('.name', userOne.name); // undefined
+    //   renderColumn('.phone', userOne.phone);
+    //   renderColumn('.email', userOne.email);
+    // }
+
+    function renderColumn(attr, data) {
+        const columnElem = document.querySelector(attr);
+        columnElem.innerHTML = data;
+    }
+
+    renderUser();
+
+  </script>
+</body>
+
+</html>

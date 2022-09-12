@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>promise test</title>
+  
+</head>
+
+<body>
+  <div></div>
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script>
+    // function getData(callbackFunc) {
+    //   $.get('https://jsonplaceholder.typicode.com/todos/1', function (response) {
+    //     callbackFunc(response); // 서버에서 받은 데이터 response를 callbackFunc() 함수에 넘겨줌
+    //   });
+    // }
+
+    // getData(function (tableData) {
+    //   console.log(tableData); // $.get()의 response 값이 tableData에 전달됨
+    // });
+
+
+    function getData(callback) {
+      return new Promise(function(resolve, reject) {
+        $.get('https://jsonplaceholder.typicode.com/todos/1', function(response) {
+          if (response) {
+            resolve(response);
+          }
+          reject(new Error('request failed'));
+        })
+      });
+    }
+
+    getData().then(function(data) {
+      // fulfilled 
+      console.log(data);
+    }).catch(function(err) {
+      // reject
+      console.error(err);
+    });
+
+  </script>
+</body>
+
+</html>

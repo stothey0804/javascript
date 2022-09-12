@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const urls = [
+      'https://jsonplaceholder.typicode.com/users/1',
+      'https://jsonplaceholder.typicode.com/users/2',
+      'https://jsonplaceholder.typicode.com/users/3'
+    ];
+
+    // 프로미스 배열 매핑
+    const requests = urls.map((url) => fetch(url));
+
+    // 여러 프로미스를 한꺼번에 실행 시키며, 하나라도 reject 되면 전체를 거절함.
+    // ex. download 완료 후 컨텐츠 처리
+    Promise.all(requests)
+      .then(responses => {
+        responses.forEach((response) => console.log(`${response.url} : ${response.status}`));
+        return responses;
+      })
+      .then(responses => Promise.all(responses.map(res => res.json())))
+      // JSON 형태의 응답 메시지는 파싱 되어 배열 'users'에 저장
+      .then(users => users.forEach(user => console.log(user.name)))
+      .catch(err => console.error(err));
+  </script>
+</body>
+
+</html>
