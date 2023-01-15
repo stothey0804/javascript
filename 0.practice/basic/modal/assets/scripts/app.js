@@ -1,14 +1,41 @@
 const backDropEl = document.getElementById('backdrop');
-const modalEl = document.getElementById('add-modal');
+const addModalEl = document.getElementById('add-modal');
+const deleteModalEl = document.getElementById('delete-modal');
 
 const showModalBtn = document.querySelector('header>button');
-const addMovieBtn = document.querySelector('.modal__actions .btn--success');
-const cancelBtn = document.querySelector('.modal__actions .btn--passive');
+const confirmAddMovieBtn = document.querySelector('.modal__actions .btn--success');
+const cancelAddMovieBtn = document.querySelector('.modal__actions .btn--passive');
 
-const closeModal = () => {
-  backDropEl.style.display = 'none';
-  modalEl.style.display = 'none';  
+const userInputs = document.querySelectorAll('input');
+const emptySection = document.getElementById('entry-text');
+
+
+const toggleBackdrop = () => {
+  backDropEl.classList.toggle('visible');
+}
+
+const showEmptySection = () => {
+  emptySection.classList.add('visible');
 };
+
+const hideEmptySection = () => {
+  emptySection.classList.remove('visible');
+};
+
+
+const toggleModal = () => {
+  addModalEl.classList.toggle('visible');
+  toggleBackdrop();
+};
+
+const backdropClickHandler = () => {
+  toggleModal();
+};
+
+const cancelAddMovieHandler = () => {
+  toggleModal();
+};
+
 
 const renderMovieElement = (htmlString) => {
   const movieListEl = document.getElementById('movie-list');
@@ -27,27 +54,37 @@ const createMovieElementString  = ({title, imageUrl, rating}) => {
           </li>`;
 }
 
-const updateMovieList = () => {
+const checkDataValidation = ({title, imageUrl, rating}) => {
+  let isPassed = false;
+  if (title && imageUrl && rating) {
+    if(rating && rating > 0 && rating < 6) {
+      isPassed = true;
+    }
+  } 
+  return isPassed;
+}
+
+const confirmAddMovieHandler = () => {
   // update 
   const data = {
-    title: document.getElementById('title').value,
-    imageUrl: document.getElementById('image-url').value,
-    rating: document.getElementById('rating').value,
+    title: userInputs[0].value.trim(),
+    imageUrl: userInputs[1].value.trim(),
+    rating: Number(userInputs[2].value.trim()),
   }
-
-  renderMovieElement(createMovieElementString(data));  
-
-  closeModal();
+  if(checkDataValidation(data)) {
+    renderMovieElement(createMovieElementString(data));  
+    toggleModal();
+  } else {
+    alert('data error');
+  }
 }
 
 
 // event handlers 
-showModalBtn.addEventListener('click', () => {
-  backDropEl.style.display = 'block';
-  modalEl.style.display = 'block';  
-});
+showModalBtn.addEventListener('click', toggleModal);
+backDropEl.addEventListener('click', backdropClickHandler);
 
-cancelBtn.addEventListener('click', closeModal);
-addMovieBtn.addEventListener('click', updateMovieList);
+cancelAddMovieBtn.addEventListener('click', cancelAddMovieHandler);
+confirmAddMovieBtn.addEventListener('click', confirmAddMovieHandler);
 
 
