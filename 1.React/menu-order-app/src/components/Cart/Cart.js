@@ -4,7 +4,7 @@ import classes from './Cart.module.css'
 import CartItem from "./CartItem";
 import Modal from "../UI/Modal";
 
-const Cart = ({onHideCart}) => {
+const Cart = ({onClose}) => {
   return (
     <Modal>
       <CartItems></CartItems>
@@ -12,8 +12,8 @@ const Cart = ({onHideCart}) => {
         <span>Total Amount</span>
         <span></span>
       </div>
-      <div className={classes.action}>
-        <button className={classes['button--alt']} onClick={onHideCart}>Close</button>
+      <div className={classes.actions}>
+        <button className={classes['button--alt']} onClick={onClose}>Close</button>
         <button className={classes.button}>Order</button>
       </div>
     </Modal>
